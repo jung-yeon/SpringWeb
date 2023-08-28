@@ -11,6 +11,7 @@ import org.zerock.ex1.entity.Memo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -58,18 +59,21 @@ public class MemoRepositoryTests {
         System.out.println("======================================");
         System.out.println(memo);
     }
+
     @Test
     @DisplayName("update 테스트")
     public void testUpdate() {
         Memo memo = Memo.builder().mno(100L).memoText("Update Text").build();
         System.out.println(memoRepository.save(memo));
     }
+
     @Test
     @DisplayName("delete 테스트")
     public void testDelete() {
         Long mno = 100L;
         memoRepository.deleteById(mno);
     }
+
     @Test
     @DisplayName("paging 테스트")
     public void testPageDefault() {
@@ -85,19 +89,29 @@ public class MemoRepositoryTests {
         System.out.println("has next page?: " + result.hasNext()); // 다음 페이지 존재 여부
         System.out.println("first page: " + result.isFirst()); // 시작 페이지(0) 여부
         System.out.println("-------------------------------------");
-        for (Memo memo: result.getContent()) {
+        for (Memo memo : result.getContent()) {
             System.out.println(memo);
         }
     }
+
     @Test
     @DisplayName("paging 정렬 테스트")
-    public void testSorts(){
+    public void testSorts() {
         Sort sort = Sort.by("mno").descending();
-        Pageable pageable = PageRequest.of(0,10,sort);
+        Pageable pageable = PageRequest.of(0, 10, sort);
         Page<Memo> result = memoRepository.findAll(pageable);
         result.get().forEach(memo -> {
             System.out.println(memo);
         });
+    }
+
+    @Test
+    @DisplayName("메서드 이름 between 사용 order By 적용")
+    public void testQueryMethods() {
+        List<Memo> list = memoRepository.findByMnoBetweenOrderByMnoDesc(70L, 80L);
+        for(Memo memo : list){
+            System.out.println(memo);
+        }
     }
 
 }
