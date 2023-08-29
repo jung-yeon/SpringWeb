@@ -1,3 +1,8 @@
+org\zerock\ex1\dto\SampleDTO.class
+org\zerock\ex1\repository\MemoRepository.class
+org\zerock\ex1\entity\Memo$MemoBuilder.class
 org\zerock\ex1\controller\SampleController.class
 org\zerock\Main.class
 org\zerock\ex1\Ex1Application.class
+org\zerock\ex1\dto\SampleDTO$SampleDTOBuilder.class
+org\zerock\ex1\entity\Memo.class

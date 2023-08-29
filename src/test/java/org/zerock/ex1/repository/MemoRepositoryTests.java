@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerock.ex1.entity.Memo;
 
@@ -113,5 +114,23 @@ public class MemoRepositoryTests {
             System.out.println(memo);
         }
     }
+    @Test
+    @DisplayName("Pageable을 통한 좀더 간단한 형태의 메서드 선언 가능 테스트")
+    public void testQueryMethodsWithPageable() {
+        Pageable pageable = PageRequest.of(0,10,Sort.by("mno").descending());
+        Page<Memo> result = memoRepository.findByMnoBetween(10L,50L,pageable);
+        result.get().forEach(memo -> System.out.println(memo));
+    }
 
+    @Commit // 최종결과 커밋
+    // 이를 적용하지 않으면 테스트 코드느 deleteBy는 기본적으로 롤백처리되어서 결과가 반영되지 않음
+    //deleteBy는 식제 개발에는 많이 사용되지 않음 이유는? SQL을 이용하듯이 한 번에 삭제가 이루어지는 것이 아니라 각 엔티티 객체를 하나씩 삭제하기 때문
+    @Transactional
+    //트랜잭션 처리를 위해 사용하는 어노테이션
+    // select문으로 해당 엔디디객체들을 가져오는 작업과 각 엔티티를 삭제하는 작업이 같이 이루어지기 때문에 사용해야함
+    @Test
+    @DisplayName("메모의 번호(mno)가 10보다 작은 데이터 삭제")
+    public void testDeleteQueryMethods(){
+        memoRepository.deleteMemoByMnoLessThan(10L);
+    }
 }

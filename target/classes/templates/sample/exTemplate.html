@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>파라미터로 현재 파일의 content부분만 전달</title>
+</head>
+<body>
+<th:block th:replace="~{/layout/layout1 :: setContent(~{this::content})}">
+  <th:block th:fragment="content">
+    <h1>exTemplate Page</h1>
+  </th:block>
+</th:block>
+</body>
+
+</html>

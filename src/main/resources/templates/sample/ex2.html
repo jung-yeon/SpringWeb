@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf 실습</title>
+
+</head>
+<body>
+<ul>
+    <!-- 반복문 상태(state) 객체 -->
+    <!-- 순번이나 인덱스 번호, 홀수/짝수등을 지정 가능 -->
+    <li th:each="dto, state : ${list}">
+        [[${state.index+1}]] --- [[${dto}]]
+    </li>
+</ul>
+<hr>
+<h3>제어문 처리</h3>
+<ul>
+    <!-- sno값이 5의 배수들만 출력 -->
+    <li th:each="dto, state : ${list}" th:if="${dto.sno % 5 ==0 }">
+        [[${state.index+1}]] --- [[${dto}]]
+    </li>
+</ul>
+<hr>
+<h3>th:if / th:unless를 이용한 상황에 맞게 단독으로 처리</h3>
+<ul>
+    <li th:each="dto, state : ${list}">
+        <span th:if="${dto.sno % 5 ==0}" th:text="${'--------------'+dto.sno}"></span>
+        <span th:unless="${dto.sno % 5 ==0}" th:text="${dto.first}"></span>
+    </li>
+</ul>
+<hr>
+<h3>삼항연산자 방식 이용</h3>
+<ul>
+    <li th:each="dto, state : ${list}" th:text="${dto.sno % 5 == 0} ? ${'=========' + dto.sno} :${dto.first}"></li>
+</ul>
+<hr>
+<h3>CSS 적용</h3>
+
+<style>
+        .target{
+            background-color: red;
+        }
+    </style>
+<ul>
+    <li th:each="dto,state: ${list}" th:class="${dto.sno % 5 == 0}? 'target'" th:text="${dto}"></li>
+</ul>
+
+</body>
+</html>
